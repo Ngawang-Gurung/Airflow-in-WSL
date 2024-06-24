@@ -1,4 +1,3 @@
-# Note: This DAG is not working!
 
 from airflow.models import DAG
 from airflow.operators.bash_operator import BashOperator
