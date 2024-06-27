@@ -1,5 +1,3 @@
-# This DAG is not working in Windows WSL
-
 # DAG object
 from airflow import DAG
 # Operators
@@ -16,8 +14,8 @@ def update_date_on_config_table(schema_name, table_name, index, interval_period)
     Update dates on config table using PyMySQL 
     '''
     pymysql_connection = pymysql.connect(
-        host='172.24.240.1',
-        user='wsl_root',
+        host='localhost',
+        user='user',
         password='mysql000',
         database=schema_name
     )
@@ -39,9 +37,9 @@ def upload():
     spark = SparkSession.builder.appName("Incremental_Load").config("spark.hadoop.fs.defaultFS", "hdfs://172.24.240.1:19000").config("spark.hadoop.dfs.client.use.datanode.hostname", "true").getOrCreate()
 
     def table_df(schema_name, table_name):
-        url = f"jdbc:mysql://172.24.240.1/{schema_name}"
+        url = f"jdbc:mysql://localhost/{schema_name}"
         properties = {
-            "user": "wsl_root",
+            "user": "user",
             "password": "mysql000",
             "driver": "com.mysql.cj.jdbc.Driver"
         }
@@ -50,8 +48,8 @@ def upload():
 
     def field_mapped_df(cf_db, schema_name, table_name, table_id):
         con = pymysql.connect(
-            host='172.24.240.1',
-            user='wsl_root',
+            host='localhost',
+            user='user',
             password='mysql000',
             database=cf_db
         )
@@ -65,7 +63,7 @@ def upload():
 
         return df
 
-    df = table_df('config_db', 'cf_etl_table_wsl')
+    df = table_df('config_db', 'cf_etl_table')
 
     for i, row in zip(range(df.count()), df.collect()):
         is_incremental, table_id, schema, table, location, hdfs_file = row['is_incremental'], row['table_id'], row['schema_name'], row['table_name'], row['hdfs_upload_location'], row['hdfs_file_name']
@@ -80,7 +78,7 @@ def upload():
             result = spark.sql(f"SELECT * FROM incremental_table WHERE {date_col} BETWEEN '{start_date}' AND '{end_date}'")
             result.write.mode('append').parquet(hdfs_path, partitionBy=partition_by)
 
-            update_date_on_config_table('config_db', 'cf_etl_table_wsl', i, interval_period)
+            update_date_on_config_table('config_db', 'cf_etl_table', i, interval_period)
             logging.info("Successful Upload")
 
         else:
@@ -97,7 +95,7 @@ default_args = {
 
 # Instantiate a DAG
 dag = DAG(
-    dag_id='cf_etl_dag',
+    dag_id='config_etl_dag',
     default_args=default_args,
     description='This is config driven incremental loading DAG',
     schedule_interval='@once',

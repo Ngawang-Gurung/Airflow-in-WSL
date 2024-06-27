@@ -1,5 +1,3 @@
-# This DAG is not working
-
 # DAG object
 from airflow import DAG
 # Operators
@@ -13,12 +11,12 @@ import pymysql
 import logging
 
 def func():
-    spark = SparkSession.builder.appName("Incremental_Load").config("spark.hadoop.fs.defaultFS", "hdfs://172.24.240.1:19000").config("spark.hadoop.dfs.client.use.datanode.hostname", "true").getOrCreate()
+    spark = SparkSession.builder.appName("Incremental_Load").config("spark.hadoop.fs.defaultFS", "hdfs://localhost:9000").getOrCreate()
 
     df = spark.createDataFrame([
     Row(a = 1, b = 2., c='string1', d = date(2000, 1, 1)),
     Row(a = 2, b = 3., c='string2', d = date(2000, 2, 1)),])
-    df.write.mode('append').parquet("hdfs://172.24.240.1:19000/mydir/data")
+    df.write.mode('append').parquet("hdfs://localhost:9000/mydir/")
     logging.info("Successful Upload")
 
 default_args = {
