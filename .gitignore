@@ -2,3 +2,5 @@ venv/
 logs/
 dags/__pycache__/
 airflow.cfg
+airflow.db
+webserver_config.py
