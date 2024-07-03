@@ -1,3 +1,4 @@
+# This DAG works in both Windows WSL and Linux
 
 from airflow.models import DAG
 from airflow.operators.bash_operator import BashOperator

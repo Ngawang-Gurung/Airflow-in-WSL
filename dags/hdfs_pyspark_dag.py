@@ -1,3 +1,5 @@
+# This DAG is not working in Windows WSL but works in Linux
+
 # DAG object
 from airflow import DAG
 # Operators
@@ -10,13 +12,22 @@ from pyspark.sql import Row
 import pymysql
 import logging
 
+# def func():
+#     spark = SparkSession.builder.appName("Incremental_Load").config("spark.hadoop.fs.defaultFS", "hdfs://localhost:9000").getOrCreate()
+
+#     df = spark.createDataFrame([
+#     Row(a = 1, b = 2., c='string1', d = date(2000, 1, 1)),
+#     Row(a = 2, b = 3., c='string2', d = date(2000, 2, 1)),])
+#     df.write.mode('append').parquet("hdfs://localhost:9000/mydir/")
+#     logging.info("Successful Upload")
+
 def func():
-    spark = SparkSession.builder.appName("Incremental_Load").config("spark.hadoop.fs.defaultFS", "hdfs://localhost:9000").getOrCreate()
+    spark = SparkSession.builder.appName("Incremental_Load").getOrCreate()
 
     df = spark.createDataFrame([
     Row(a = 1, b = 2., c='string1', d = date(2000, 1, 1)),
     Row(a = 2, b = 3., c='string2', d = date(2000, 2, 1)),])
-    df.write.mode('append').parquet("hdfs://localhost:9000/mydir/")
+    df.write.mode('overwrite').parquet("hdfs://172.24.240.1:19000/test/")
     logging.info("Successful Upload")
 
 default_args = {

@@ -34,7 +34,7 @@ def update_date_on_config_table(schema_name, table_name, index, interval_period)
 
 
 def upload():
-    spark = SparkSession.builder.appName("Incremental_Load").config("spark.hadoop.fs.defaultFS", "hdfs://172.24.240.1:19000").config("spark.hadoop.dfs.client.use.datanode.hostname", "true").getOrCreate()
+    spark = SparkSession.builder.appName("Incremental_Load").getOrCreate()
 
     def table_df(schema_name, table_name):
         url = f"jdbc:mysql://localhost/{schema_name}"
