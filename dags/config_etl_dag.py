@@ -8,16 +8,25 @@ from pyspark.sql import SparkSession
 import pymysql
 import logging
 
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+DB_USERNAME = os.getenv('DB_USERNAME')
+DB_PASSWORD = os.getenv('DB_PASSWORD')
+DB_HOST = os.getenv('DB_HOST')
+DB_PORT = os.getenv('DB_PORT')
 
 def update_date_on_config_table(schema_name, table_name, index, interval_period):
     '''
     Update dates on config table using PyMySQL 
     '''
     pymysql_connection = pymysql.connect(
-        host='localhost',
-        user='user',
-        password='mysql000',
-        database=schema_name
+        host= DB_HOST,
+        user= DB_USERNAME,
+        password=DB_PASSWORD,
+        database= schema_name
     )
 
     with pymysql_connection.cursor() as cursor:
@@ -37,10 +46,10 @@ def upload():
     spark = SparkSession.builder.appName("Incremental_Load").getOrCreate()
 
     def table_df(schema_name, table_name):
-        url = f"jdbc:mysql://localhost/{schema_name}"
+        url = f"jdbc:mysql://{DB_HOST}:{DB_PORT}/{schema_name}"
         properties = {
-            "user": "user",
-            "password": "mysql000",
+            "user": DB_USERNAME,
+            "password": DB_PASSWORD,
             "driver": "com.mysql.cj.jdbc.Driver"
         }
         df = spark.read.jdbc(url=url, table=table_name, properties=properties)
@@ -48,9 +57,9 @@ def upload():
 
     def field_mapped_df(cf_db, schema_name, table_name, table_id):
         con = pymysql.connect(
-            host='localhost',
-            user='user',
-            password='mysql000',
+            host= DB_HOST,
+            user= DB_USERNAME,
+            password=DB_PASSWORD,
             database=cf_db
         )
 

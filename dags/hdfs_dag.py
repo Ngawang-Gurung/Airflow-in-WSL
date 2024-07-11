@@ -7,11 +7,11 @@ from datetime import datetime, timedelta
 from hdfs import InsecureClient
 
 def upload_to_hdfs():
-    # # Establish a connection to HDFS
-    # hdfs_client = InsecureClient('http://localhost:9870', user='Ngawang')
+    # host_name = "localhost"
+    host_name = "172.24.240.1"
     
     # Establish a connection to HDFS from WSL
-    hdfs_client = InsecureClient('http://172.24.240.1:9870', user='Ngawang')
+    hdfs_client = InsecureClient(f'http://{host_name}:9870', user='Ngawang')
     
     # Define local and HDFS file paths
     local_file_path = "dags/email_dag.py"
@@ -26,9 +26,7 @@ def upload_to_hdfs():
 
 default_args = {
     'owner': 'Airflow',
-    'start_date': datetime(2024, 3, 14),
-    # 'retries': 3,
-    # 'retry_delay': timedelta(minutes=1)
+    'start_date': datetime(2024, 3, 14)
 }
 
 hdfs_dag = DAG(
@@ -46,15 +44,5 @@ upload_task = PythonOperator(
 )
 
 upload_task
-
-# hdfs_command = "hdfs dfs put /opt/airflow/dags/myfile.csv /mydir"
-
-# bash_upload = BashOperator(
-#     task_id = 'bash_upload',
-#     bash_command= hdfs_command,
-#     dag = hdfs_dag
-# )
-
-# bash_upload
 
 

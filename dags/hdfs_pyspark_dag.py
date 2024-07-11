@@ -12,14 +12,8 @@ from pyspark.sql import Row
 import pymysql
 import logging
 
-# def func():
-#     spark = SparkSession.builder.appName("Incremental_Load").config("spark.hadoop.fs.defaultFS", "hdfs://localhost:9000").getOrCreate()
-
-#     df = spark.createDataFrame([
-#     Row(a = 1, b = 2., c='string1', d = date(2000, 1, 1)),
-#     Row(a = 2, b = 3., c='string2', d = date(2000, 2, 1)),])
-#     df.write.mode('append').parquet("hdfs://localhost:9000/mydir/")
-#     logging.info("Successful Upload")
+# host_name = "172.24.240.1"
+host_name = "localhost"
 
 def func():
     spark = SparkSession.builder.appName("Incremental_Load").getOrCreate()
@@ -27,17 +21,14 @@ def func():
     df = spark.createDataFrame([
     Row(a = 1, b = 2., c='string1', d = date(2000, 1, 1)),
     Row(a = 2, b = 3., c='string2', d = date(2000, 2, 1)),])
-    df.write.mode('overwrite').parquet("hdfs://172.24.240.1:19000/test/")
+    df.write.mode('overwrite').parquet(f"hdfs://{host_name}:19000/test/")
     logging.info("Successful Upload")
 
 default_args = {
     'owner': 'Airflow',
-    'start_date': datetime(2024, 3, 14),
-    # 'retries': 3,
-    # 'retry_delay': timedelta(minutes=1)
+    'start_date': datetime(2024, 3, 14)
 }
 
-# Instantiate a DAG
 dag = DAG(
     dag_id='hdfs_pyspark_dag',
     default_args=default_args,

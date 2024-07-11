@@ -16,15 +16,11 @@ def func():
     Row(a = 2, b = 3., c='string2', d = date(2000, 2, 1)),])
     return df.show()
 
-# Initializing default arguments for DAG
 default_args = {
     'owner': 'Airflow',
-    'start_date': datetime(2024, 3, 14),
-    # 'retries': 3,
-    # 'retry_delay': timedelta(minutes=1)
+    'start_date': datetime(2024, 3, 14)
 }
 
-# Instantiate a DAG
 dag = DAG(
     dag_id='spark_dag',
     default_args=default_args,

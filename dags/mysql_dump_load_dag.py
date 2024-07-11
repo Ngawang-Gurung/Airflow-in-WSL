@@ -1,14 +1,21 @@
 from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
 from datetime import datetime, timedelta
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+DB_USERNAME = os.getenv('DB_USERNAME')
+DB_PASSWORD = os.getenv('DB_PASSWORD')
+DB_HOST = os.getenv('DB_HOST')
+DB_PORT = os.getenv('DB_PORT')
 
 default_args = {
     'owner': 'airflow',
     'start_date': datetime(2024, 3, 14),
     'email_on_failure': False,
-    'email_on_retry': False,
-    # 'retries': 1,
-    # 'retry_delay': timedelta(minutes=1),
+    'email_on_retry': False
 }
 
 dag = DAG(
@@ -19,7 +26,8 @@ dag = DAG(
     catchup=False,
 )
 
-dump_command = "mysqldump -u wsl_root -pmysql000 -h 172.24.240.1 -P 3306 customer customer_profile > /home/user/airflow_wsl/dags/dump_file.sql 2>/home/user/airflow_wsl/dags/dump_error.log"
+dump_command = f"mysqldump -u {DB_USERNAME} -p{DB_PASSWORD} -h {DB_HOST} -P {DB_PORT} customer customer_profile > /home/user/airflow_wsl/dags/dump_file.sql 2>/home/user/airflow_wsl/dags/dump_error.log"
+
 
 dump_task = BashOperator(
     task_id='mysql_table_dump_task',
@@ -27,7 +35,7 @@ dump_task = BashOperator(
     dag=dag 
 )
 
-load_command = "mysql -u wsl_root -pmysql000 -h 172.24.240.1 -P 3306 client_rw < /home/user/airflow_wsl/dags/dump_file.sql" 
+load_command = f"mysql -u {DB_USERNAME} -p{DB_PASSWORD} -h {DB_HOST} -P {DB_PORT} client_rw < /home/user/airflow_wsl/dags/dump_file.sql" 
 
 load_task = BashOperator(
     task_id='mysql_table_load_task',

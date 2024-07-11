@@ -1,3 +1,5 @@
+# Note:- This DAG requires [SMTP] and [EMAIL] to be set on airflow.cfg
+
 from datetime import datetime, timedelta
 import airflow
 from airflow import DAG
@@ -34,8 +36,7 @@ start_task = PythonOperator(
 
 send_email = EmailOperator(
     task_id='send_email',
-    to='anuragkarkikarki79@gmail.com',
-    # to='susma.pant@extensodata.com',
+    to='tseringnc707@gmail.com',
     # to = ['tseringnc707@gmail.com','susma.pant@extensodata.com','neupanebishal039@gmail.com', 'anuragkarkikarki79@gmail.com', 'bisheshkafle18@gmail.com', 'kalyanad100@gmail.com'],
     subject='Airflow Message',
     html_content="""<h2>Good Morning, Ngawang Gurung</h2>""",

@@ -47,7 +47,6 @@ end_task = DummyOperator(
 )
 
 # Setting up dependencies
-
 start_task >> hello_world_task >> end_task
 
 

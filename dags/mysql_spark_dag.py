@@ -1,20 +1,25 @@
-# DAG object
 from airflow import DAG
-
-# Operators
 from airflow.operators.python_operator import PythonOperator
-
 from datetime import timedelta, datetime, date
 
 from pyspark.sql import SparkSession
+import os
+from dotenv import load_dotenv
 
-def main():
-    spark = SparkSession.builder.appName("spark_dataframe").config("spark.jars", "/home/user/airflow_wsl/venv/lib/python3.10/site-packages/pyspark/jars/mysql-connector-j-8.4.0.jar").getOrCreate()
-    url = "jdbc:mysql://172.24.240.1:3306/customer"
+load_dotenv()
+
+DB_USERNAME = os.getenv('DB_USERNAME')
+DB_PASSWORD = os.getenv('DB_PASSWORD')
+DB_HOST = os.getenv('DB_HOST')
+DB_PORT = os.getenv('DB_PORT')
+
+def mysql_spark_connection():
+    spark = SparkSession.builder.appName("spark_dataframe").getOrCreate()
+    url = f"jdbc:mysql://{DB_HOST}:{DB_PORT}/customer"
     properties = {
-        "user": "wsl_root",
-        "password": "mysql000",
-        "driver": "com.mysql.jdbc.Driver"
+        "user": DB_USERNAME,
+        "password": DB_PASSWORD,
+        "driver": "com.mysql.cj.jdbc.Driver"
     }
     df = spark.read.jdbc(url=url, table='customer_profile', properties=properties)
     return df.show()
@@ -22,9 +27,7 @@ def main():
 # Initializing default arguments for DAG
 default_args = {
     'owner': 'Airflow',
-    'start_date': datetime(2024, 3, 14),
-    # 'retries': 3,
-    # 'retry_delay': timedelta(minutes=1)
+    'start_date': datetime(2024, 3, 14)
 }
 
 # Instantiate a DAG
@@ -36,9 +39,9 @@ dag = DAG(
     catchup=False
 )
 
-mysql_spark_task = PythonOperator(
-    task_id = 'mysql_spark_task',
-    python_callable = main,
+mysql_spark_conn_task = PythonOperator(
+    task_id = 'mysql_spark_conn_task',
+    python_callable = mysql_spark_connection,
     dag = dag
 )
 
