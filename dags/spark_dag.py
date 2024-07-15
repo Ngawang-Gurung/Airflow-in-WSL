@@ -1,9 +1,5 @@
-# DAG object
 from airflow import DAG
-
-# Operators
-from airflow.operators.python_operator import PythonOperator
-
+from airflow.operators.python import PythonOperator
 from datetime import timedelta, datetime, date
 
 from pyspark.sql import SparkSession

@@ -1,8 +1,7 @@
 # This DAG works in both Windows WSL and Linux
 
 from airflow.models import DAG
-from airflow.operators.bash_operator import BashOperator
-from airflow.operators.python_operator import PythonOperator
+from airflow.operators.python import PythonOperator
 from datetime import datetime, timedelta
 from hdfs import InsecureClient
 
@@ -10,7 +9,7 @@ def upload_to_hdfs():
     # host_name = "localhost"
     host_name = "172.24.240.1"
     
-    # Establish a connection to HDFS from WSL
+    # Establish a connection to HDFS 
     hdfs_client = InsecureClient(f'http://{host_name}:9870', user='Ngawang')
     
     # Define local and HDFS file paths

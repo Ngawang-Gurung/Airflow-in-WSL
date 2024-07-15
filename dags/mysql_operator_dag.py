@@ -1,7 +1,7 @@
 from airflow import DAG
-from airflow.operators.bash_operator import BashOperator
+from airflow.operators.bash import BashOperator
+from airflow.providers.mysql.operators.mysql import MySqlOperator
 from datetime import datetime, timedelta
-from airflow.operators.mysql_operator import MySqlOperator
 
 default_args = {
     'owner': 'airflow',
@@ -17,15 +17,15 @@ dag = DAG(
 )
 
 mysql_query = """
-    CREATE TABLE employee(
+    CREATE TABLE IF NOT EXISTS employee(
         name varchar(255)
     );
 """
 
 mysql_task = MySqlOperator(
     task_id='mysql_task',
-    mysql_conn_id='MySQLID', # Connection ID created in Airflow Connnections
     sql=mysql_query,
+    mysql_conn_id='MySQLID', # Connection ID created in Airflow Connnections
     database = 'customer',
     dag=dag,
 )

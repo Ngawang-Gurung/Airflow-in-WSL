@@ -5,7 +5,7 @@ from datetime import timedelta, datetime
 from airflow import DAG
 
 # Operators
-from airflow.operators.python_operator import PythonOperator
+from airflow.operators.python import PythonOperator
 
 # Utils 
 from utils.mysql_connection import table_df

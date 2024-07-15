@@ -1,12 +1,7 @@
-#datetime
 from datetime import timedelta, datetime
-
-# DAG object
 from airflow import DAG
-
-# Operators
-from airflow.operators.dummy_operator import DummyOperator
-from airflow.operators.python_operator import PythonOperator
+from airflow.operators.empty import EmptyOperator
+from airflow.operators.python import PythonOperator
 
 # Initializing default arguments for DAG
 default_args = {
@@ -30,7 +25,7 @@ def print_hello():
     return 'Hello, World!'
 
 # Creating tasks
-start_task = DummyOperator(
+start_task = EmptyOperator(
     task_id = 'start_task',
     dag = hello_world_dag
 )
@@ -41,7 +36,7 @@ hello_world_task = PythonOperator(
     dag = hello_world_dag
 )
 
-end_task = DummyOperator(
+end_task = EmptyOperator(
     task_id = 'end_task',
     dag = hello_world_dag
 )

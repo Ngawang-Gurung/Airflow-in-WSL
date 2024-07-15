@@ -1,4 +1,4 @@
-# This DAG is not working in Windows WSL but works in Linux
+# This DAG doesn't work in Windows WSL but works in Linux
 
 # DAG object
 from airflow import DAG
@@ -12,8 +12,9 @@ from pyspark.sql import Row
 import pymysql
 import logging
 
-# host_name = "172.24.240.1"
-host_name = "localhost"
+# HOST_NAME= "172.24.240.1"
+HOST_NAME = "localhost"
+PORT = 19000
 
 def func():
     spark = SparkSession.builder.appName("Incremental_Load").getOrCreate()
@@ -21,7 +22,7 @@ def func():
     df = spark.createDataFrame([
     Row(a = 1, b = 2., c='string1', d = date(2000, 1, 1)),
     Row(a = 2, b = 3., c='string2', d = date(2000, 2, 1)),])
-    df.write.mode('overwrite').parquet(f"hdfs://{host_name}:19000/test/")
+    df.write.mode('overwrite').parquet(f"hdfs://{HOST_NAME}:{PORT}/test/")
     logging.info("Successful Upload")
 
 default_args = {
