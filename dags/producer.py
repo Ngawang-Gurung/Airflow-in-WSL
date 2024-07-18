@@ -1,8 +1,6 @@
 '''
-Producer and Consumer DAG is used to verify how Airflow Dataset works.
-
-Taskflow API is explored
-
+The producer and consumer DAG is used to verify how Airflow Dataset works.
+Taskflow API is also explored
 '''
 
 from airflow.decorators import dag, task

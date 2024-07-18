@@ -2,7 +2,6 @@
 This DAG is used to upload a file in HDFS using InsecureClient.
 
 This DAG works in both Windows WSL and Linux
-
 '''
 
 from airflow.models import DAG

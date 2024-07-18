@@ -1,5 +1,5 @@
 '''
-Producer and Consumer DAG is used to verify how Airflow Dataset works.
+The producer and consumer DAG is used to verify how Airflow Dataset works.
 '''
 
 from airflow.decorators import dag, task
