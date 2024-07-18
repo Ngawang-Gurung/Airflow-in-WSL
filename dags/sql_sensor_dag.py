@@ -1,3 +1,10 @@
+'''
+This DAG is used to verify how Airflow SQLSensor works.
+
+Alternative way of writing DAG usign `with` is explored.
+
+'''
+
 from airflow import DAG
 from airflow.providers.common.sql.sensors.sql import SqlSensor
 from airflow.operators.empty import EmptyOperator

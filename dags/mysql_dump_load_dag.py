@@ -1,3 +1,7 @@
+'''
+This DAG explores how BashOperator can be used to dump and import SQL files. 
+'''
+
 from airflow import DAG
 from airflow.operators.bash import BashOperator
 from datetime import datetime, timedelta

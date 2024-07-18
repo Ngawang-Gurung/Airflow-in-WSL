@@ -1,9 +1,12 @@
+'''
+This DAG is used to verify if PySpark runs on Airflow. 
+'''
+
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from datetime import timedelta, datetime, date
 
-from pyspark.sql import SparkSession
-from pyspark.sql import Row
+from pyspark.sql import SparkSession, Row
 
 def func():
     spark = SparkSession.builder.getOrCreate()

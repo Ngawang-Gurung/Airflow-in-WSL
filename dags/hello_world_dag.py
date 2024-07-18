@@ -1,7 +1,11 @@
-from datetime import timedelta, datetime
+'''
+The first DAG. Serves as a template for all other DAGs. 
+'''
+
 from airflow import DAG
 from airflow.operators.empty import EmptyOperator
 from airflow.operators.python import PythonOperator
+from datetime import timedelta, datetime
 
 # Initializing default arguments for DAG
 default_args = {

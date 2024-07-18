@@ -1,3 +1,10 @@
+'''
+This DAG is used to verify if MySQL and PySpark connection works.
+
+mysql-connector-j-8.4.0.jar is placed inside pyspark package's jar directory. 
+'''
+
+
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from datetime import timedelta, datetime, date

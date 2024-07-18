@@ -1,4 +1,9 @@
-# This DAG doesn't work in Windows WSL but works in Linux
+'''
+This DAG is used to upload a spark dataframe in HDFS in parquet format. 
+
+Note: This DAG works in Linux but not in Windows WSL (probably due to host_name.)
+
+'''
 
 # DAG object
 from airflow import DAG

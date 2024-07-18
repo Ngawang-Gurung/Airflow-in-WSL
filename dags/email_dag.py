@@ -1,7 +1,10 @@
-# Note:- This DAG requires [SMTP] and [EMAIL] to be set on airflow.cfg
+'''
+This DAG is used to schedule email weekly at 1:15 AM UTC i.e. 7:00 AM (NPT).
+
+Note:- This DAG requires [SMTP] to be set on airflow.cfg.
+'''
 
 from datetime import datetime, timedelta
-import airflow
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.operators.email import EmailOperator
@@ -25,7 +28,7 @@ email_dag = DAG(
     default_args=default_args,
     # schedule_interval='@once',
     schedule_interval='15 1 * * *',
-    dagrun_timeout=timedelta(minutes=60),
+    dagrun_timeout=timedelta(minutes=10),
     catchup=False)
 
 start_task = PythonOperator(
@@ -34,12 +37,17 @@ start_task = PythonOperator(
     dag=email_dag
 )
 
+message = """
+<h2>Good Morning, Ngawang Gurung</h2>
+"""
+
 send_email = EmailOperator(
     task_id='send_email',
     to='tseringnc707@gmail.com',
     # to = ['tseringnc707@gmail.com','susma.pant@extensodata.com','neupanebishal039@gmail.com', 'anuragkarkikarki79@gmail.com', 'bisheshkafle18@gmail.com', 'kalyanad100@gmail.com'],
     subject='Airflow Message',
-    html_content="""<h2>Good Morning, Ngawang Gurung</h2>""",
+    html_content=message,
+    files= ['/home/user/airflow/data/hello.txt'],
     dag=email_dag
 )
 

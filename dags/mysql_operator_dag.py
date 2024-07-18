@@ -1,3 +1,7 @@
+'''
+This DAG is explores how MySQLOperator works. 
+'''
+
 from airflow import DAG
 from airflow.operators.bash import BashOperator
 from airflow.providers.mysql.operators.mysql import MySqlOperator

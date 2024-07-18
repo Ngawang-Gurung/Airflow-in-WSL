@@ -1,8 +1,11 @@
+'''
+This DAG is used to verify how TriggerDagRunOperator works.
+'''
+
 from airflow import DAG
 from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 from airflow.operators.empty import EmptyOperator
 from datetime import datetime, timedelta
-
 
 default_args = {
     'start_date': datetime(2024, 3, 14),

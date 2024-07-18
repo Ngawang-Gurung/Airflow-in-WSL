@@ -1,3 +1,7 @@
+'''
+This DAG is used to verify how Airflow ExternalTaskSensor works.
+'''
+
 from airflow import DAG
 from airflow.operators.empty import EmptyOperator
 from airflow.sensors.external_task import ExternalTaskSensor
