@@ -29,8 +29,8 @@ default_args = {
     'start_date': datetime(2024, 3, 14)
 }
 
-hdfs_dag = DAG(
-    dag_id='hdfs_dag',
+hdfs_upload_dag = DAG(
+    dag_id='hdfs_upload_dag',
     default_args=default_args,
     description='This is my HDFS DAG',
     schedule_interval='@once',
@@ -40,7 +40,7 @@ hdfs_dag = DAG(
 upload_task = PythonOperator(
     task_id='upload_task',
     python_callable=upload_to_hdfs,
-    dag=hdfs_dag
+    dag=hdfs_upload_dag
 )
 
 upload_task

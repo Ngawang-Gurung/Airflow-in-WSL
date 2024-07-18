@@ -4,7 +4,7 @@ from airflow.operators.empty import EmptyOperator
 from datetime import datetime, timedelta
 
 with DAG(
-    dag_id='sql_sensor', 
+    dag_id='sql_sensor_dag', 
     start_date=datetime(2024, 3, 14),
     schedule_interval='@once',
     catchup=False
