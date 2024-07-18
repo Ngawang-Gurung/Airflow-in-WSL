@@ -17,7 +17,7 @@ dag = DAG(
 )
 
 mysql_query = """
-    CREATE TABLE IF NOT EXISTS employee(
+    CREATE TABLE IF NOT EXISTS new_table(
         name varchar(255)
     );
 """
@@ -26,7 +26,7 @@ mysql_task = MySqlOperator(
     task_id='mysql_task',
     sql=mysql_query,
     mysql_conn_id='MySQLID', # Connection ID created in Airflow Connnections
-    database = 'customer',
+    database = 'mydb',
     dag=dag,
 )
 

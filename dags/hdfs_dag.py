@@ -6,8 +6,9 @@ from datetime import datetime, timedelta
 from hdfs import InsecureClient
 
 def upload_to_hdfs():
-    # host_name = "localhost"
-    host_name = "172.24.240.1"
+
+    # host_name = "172.24.240.1"
+    host_name = "localhost"
     
     # Establish a connection to HDFS 
     hdfs_client = InsecureClient(f'http://{host_name}:9870', user='Ngawang')
