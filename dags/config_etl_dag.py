@@ -2,7 +2,7 @@
 from airflow import DAG
 # Operators
 from airflow.operators.python import PythonOperator
-from datetime import timedelta, datetime
+from datetime import datetime
 
 from pyspark.sql import SparkSession
 import pymysql
