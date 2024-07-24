@@ -11,12 +11,13 @@
 
 ## Setting Up Virtual Environment
 
-First, ensure your system is up to date and install `pip` and `virtualenv`:
+First, ensure your system is up to date and install `pip`:
 
 ```bash
 sudo apt-get update
+sudo apt install python3-venv
 sudo apt install python3-pip
-pip install virtualenv
+sudo apt install python3-dev
 ```
 
 Create and activate a virtual environment:
@@ -24,7 +25,7 @@ Create and activate a virtual environment:
 ```bash
 mkdir airflow_wsl
 cd airflow_wsl
-virtualenv venv
+python3 -m venv venv       
 source venv/bin/activate
 ```
 
@@ -215,4 +216,10 @@ Re-initialize the database:
 
 ```bash
 airflow db init
+```
+
+Create an admin user for Airflow:
+
+```bash
+airflow users create --username admin --password admin --firstname admin --lastname admin --role Admin --email admin@email.com
 ```
