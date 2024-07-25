@@ -11,7 +11,7 @@
 
 ## Setting Up Virtual Environment
 
-First, ensure your system is up to date and install `pip`:
+First, ensure your system is up to date and install necessary modules:
 
 ```bash
 sudo apt-get update
@@ -23,7 +23,7 @@ sudo apt install python3-dev
 Create and activate a virtual environment:
 
 ```bash
-mkdir airflow_wsl
+mkdir airflow_wsl   # This will create airflow_wsl directory in /home/user
 cd airflow_wsl
 python3 -m venv venv       
 source venv/bin/activate
@@ -31,9 +31,9 @@ source venv/bin/activate
 
 ## Installing Apache Airflow
 
-Before installing Airflow, you can optionally set up `AIRFLOW_HOME`. If not set, the default will be `~/airflow` (e.g., `/home/user/airflow`).
+Before installing Airflow, you need to set up `AIRFLOW_HOME`. If not, the default will be `~/airflow` (e.g., `/home/user/airflow`).
 
-Open your `.bashrc` file using the nano editor:
+Open your `.bashrc` file using the nano or any other text editor:
 
 ```bash
 nano ~/.bashrc
@@ -45,7 +45,7 @@ Add the following lines to the file:
 export AIRFLOW_HOME=/home/user/airflow_wsl
 ```
 
-> **Note:** You can set `AIRFLOW_HOME` to a directory in the Windows system using `export AIRFLOW_HOME=/mnt/c/Users/airflow_wsl/`, but it is not recommened beacuse even though files can be accessed across the operating systems, it may significantly slow down performance
+> **Note:** You can set `AIRFLOW_HOME` to a directory in the Windows system using `export AIRFLOW_HOME=/mnt/c/Users/<username>/airflow_wsl/`, but it is not recommended beacuse even though files can be accessed across the operating systems, it may significantly slow down performance.
 
 Save (CTRL+S) and exit (CTRL+X) the editor. Then, apply the changes:
 
@@ -65,7 +65,7 @@ To navigate to the Airflow directory directly, use:
 cd $AIRFLOW_HOME
 ```
 
-Install Apache Airflow:
+Install Apache Airflow in the virtual environment created before:
 
 ```bash
 pip install apache-airflow
@@ -98,8 +98,14 @@ airflow users list
 Start the Airflow webserver and scheduler:
 
 ```bash
-airflow webserver --port 8080 & airflow scheduler
+airflow webserver 
 ```
+
+```bash
+airflow scheduler
+```
+
+Exit by pressing `CTRL+C`.
 
 You have successfully installed Apache Airflow in WSL or any Linux system.
 
@@ -149,7 +155,7 @@ Install PySpark:
 pip install pyspark
 ```
 
-## Connecting MySQL Server in Windows and MySQL Client in WSL
+## Connecting MySQL Server in Windows with MySQL Client in WSL
 
 Install MySQL client and necessary dependencies in WSL:
 
@@ -177,6 +183,8 @@ FLUSH PRIVILEGES;
 
 > **Note:** The `%` character allows connections from any IP address. Ensure you use a unique username and a strong password.
 
+These ALTER and DROP statements are for refrences only.
+
 If the user is already created and you want to change the password later:
 
 ```sql
@@ -198,7 +206,7 @@ Verify the connection from WSL:
 mysql -u wsl_root -ppassword -h <WSL_IP_address> -P 3306
 ```
 
-You can find `<WSL_IP_address>` by typing `ipconfig` in Windows cmd.
+You can find your `<WSL_IP_address>` by typing `ipconfig` in Windows cmd.
 
 If there are connection issues, you might need to adjust firewall settings to allow connections to port 3306.
 
@@ -218,7 +226,7 @@ Re-initialize the database:
 airflow db init
 ```
 
-Create an admin user for Airflow:
+Again create an admin user for airflow as db is changed.
 
 ```bash
 airflow users create --username admin --password admin --firstname admin --lastname admin --role Admin --email admin@email.com
